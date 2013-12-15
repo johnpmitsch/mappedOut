@@ -59,6 +59,7 @@ function loadInstagrams() {
 
 //initialize google maps
 function initialize() {
+	tag = document.getElementById('value').value;
 	//declare map settings
 	geocoder = new google.maps.Geocoder();
 	var latlng = new google.maps.LatLng(41.8706, -72.8253);
