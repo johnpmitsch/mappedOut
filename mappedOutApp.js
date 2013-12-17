@@ -29,28 +29,31 @@ function initialize() {
 		zoom: 3		
 	}; 
 	//show map
-	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	
-	for (i = 0; i < 500; i++) {
-		//check for geolocation on instagram
-		if (typeof(latitude[i]) != 'undefined' || latitude[i] != null) {		 
-		//add markers to map
-			var marker = new google.maps.Marker({
-							position: new google.maps.LatLng(latitude[i], longitude[i]),
-							map: map,
-							identify: i,
-				});
-			markersArray.push(marker);
-		//add info windows with data
-			var infowindow = new google.maps.InfoWindow();
-			google.maps.event.addListener(marker, 'click', (function (marker, i) {
-				return function() {
-					infowindow.setContent(contentstring[i]);
-					infowindow.open(map, marker);
-				}
-			})(marker, i));
-		} 
-	}
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	
 }
+function addMarkers() {
+	console.log("in add markers");
+	for (i = 0; i < 500; i++) {
+			//check for geolocation on instagram
+			if (typeof(latitude[i]) != 'undefined' || latitude[i] != null) {		 
+			//add markers to map
+				var marker = new google.maps.Marker({
+								position: new google.maps.LatLng(latitude[i], longitude[i]),
+								map: map,
+								identify: i,
+					});
+				markersArray.push(marker);
+			//add info windows with data
+				var infowindow = new google.maps.InfoWindow();
+				google.maps.event.addListener(marker, 'click', (function (marker, i) {
+					return function() {
+						infowindow.setContent(contentstring[i]);
+						infowindow.open(map, marker);
+					}
+				})(marker, i));
+			} 
+		}
+	}	
 function loadInstagrams() {
 //get info from instagram AJAX
 	$.ajax({
@@ -67,12 +70,17 @@ function loadInstagrams() {
 				// check for location data
 				if (photos.data[i].location !== null) {
 			        //save data from instagram as variables
-					var pic = photos.data[i].images.thumbnail.url,
-						largepic = photos.data[i].images.low_resolution.url,
-						lat = photos.data[i].location.latitude,
-						lon = photos.data[i].location.longitude,
-						link = photos.data[i].link,
-						text = photos.data[i].caption.text;
+					var pic = photos.data[i].images.thumbnail.url;
+						largepic = photos.data[i].images.low_resolution.url;
+						lat = photos.data[i].location.latitude;
+						lon = photos.data[i].location.longitude;
+						link = photos.data[i].link;
+						try {
+							text = photos.data[i].caption.text;
+						}
+						catch(err) {
+							text = " ";
+						}
 						//save variables to arrays
 						latitude[a] = lat;
 						longitude[a] = lon;
@@ -81,9 +89,9 @@ function loadInstagrams() {
 						contentstring[a] = '<div class="content">' + photo_content[a] + '</div>';
 						a++;
 				}
+			}
+		addMarkers(); 
 		}
-		initialize();
-	}
 	});
 }
 //function to clear markers and array data
