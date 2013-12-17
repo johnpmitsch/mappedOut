@@ -5,7 +5,6 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAVX9aSxvTutwwyxt_CdG5_nHAnYptk30&sensor=true">
     </script>
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=drawing&sensor=false"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="mappedOutApp.js"></script>
@@ -14,13 +13,15 @@
   <body>
 	<div id="container">
 		<div id="map-canvas"></div>
+		<div id="hidediv">hide</div>
 		<div id="float" class="shadowy">
 			<img id="logo" src="http://blog.getfanba.se/wp-content/uploads/2012/11/hashtag.jpg"/>
 			<h1>mappedOut</h1>
 			<p id="subtitle">Search instagram hashtags around the globe.</p>
-			#<input type="text" id="value">
-			<input type="button" id="go" value="Go!" onclick="go();">
-			<input type="button" id="load" value="load more" onclick="initialize(); loadInstagrams();">
+			#<input type="text" class="input" id="value">
+			<input type="button" class="styled-button" id="go" value="Go!" onclick="go();">
+			<p><input type="button" class="styled-button" id="load" value="load more" onclick="initialize(); loadInstagrams();">
+			<input type="button" class="styled-button" id="clearmarkers" value="clear markers" onclick="clearOverlays();"></p>
 		</div>
 	</div>
   </body>
