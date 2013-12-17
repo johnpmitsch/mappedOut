@@ -1,13 +1,13 @@
 //declaring arrays to store data
-var latitude = [];
-var longitude = [];
-var pictures = [];
-var contentstring = [];
-var photo_content = [];
-var infowindow = [];
-var info = [];
-var markersArray = [];
-//store tag as a variable
+latitude = [];
+longitude = [];
+pictures = [];
+contentstring = [];
+photo_content = [];
+infowindow = [];
+info = [];
+markersArray = [];
+//creating variables
 var min = '',
 	url = '',
 	a = 0;	
@@ -62,11 +62,11 @@ function loadInstagrams() {
 		success: function (photos) {
 			min = photos.pagination.next_max_tag_id;
 			url = photos.pagination.next_url;
-		//cycle through instagram photos
+			//cycle through instagram photos
 			for (i = 0; i < photos.data.length; i++) {
-            // check for location data
+				// check for location data
 				if (photos.data[i].location !== null) {
-			//save data from instagram as variables
+			        //save data from instagram as variables
 					var pic = photos.data[i].images.thumbnail.url,
 						largepic = photos.data[i].images.low_resolution.url,
 						lat = photos.data[i].location.latitude,
@@ -86,8 +86,7 @@ function loadInstagrams() {
 	}
 	});
 }
-
-
+//function to clear markers and array data
 function clearOverlays() {
 	for (i = 0; i < markersArray.length; i++ ) {
     markersArray[i].setMap(null);
@@ -99,17 +98,25 @@ function clearOverlays() {
 	contentstring.length = 0;
 	google.maps.event.addDomListener(window, 'load', initialize);
 }
-
+//function to set tag based on input
  function settag() {
 		tag = document.getElementById('value').value;
 	}
-	
+//final function to run when button is clicked	
 function go() {
 		clearOverlays();
 		settag();
 		loadInstagrams();
 		}
+
 //load page
 $(document).ready(function() {
 	google.maps.event.addDomListener(window, 'load', initialize);
+	//use enter to submit
+	$('#value').keypress(function(e) {
+        if(e.which == 13) {
+			event.preventDefault();
+			go();
+			}
+		});
 	});

@@ -11,7 +11,7 @@
 			"file": "mappedOut.html",
 			"settings":
 			{
-				"buffer_size": 1396,
+				"buffer_size": 1278,
 				"line_ending": "Windows"
 			}
 		},
@@ -27,7 +27,7 @@
 			"file": "mappedOutApp.js",
 			"settings":
 			{
-				"buffer_size": 3164,
+				"buffer_size": 3329,
 				"line_ending": "Windows"
 			}
 		}
@@ -115,15 +115,15 @@
 					"file": "mappedOut.html",
 					"settings":
 					{
-						"buffer_size": 1396,
+						"buffer_size": 1278,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								807,
-								807
+								0,
+								0
 							]
 						],
 						"settings":
@@ -345,15 +345,15 @@
 					"file": "mappedOutApp.js",
 					"settings":
 					{
-						"buffer_size": 3164,
+						"buffer_size": 3329,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								897,
-								897
+								0,
+								0
 							]
 						],
 						"settings":
