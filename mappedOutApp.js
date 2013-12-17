@@ -21,6 +21,7 @@ instagram = {
 };	
 //initialize google maps
 function initialize() {
+console.log("initialize");
 	//declare map settings
 	geocoder = new google.maps.Geocoder();
 	var latlng = new google.maps.LatLng(41.8706, -72.8253);
@@ -32,7 +33,7 @@ function initialize() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	
 }
 function addMarkers() {
-	console.log("in add markers");
+console.log("add marker");
 	for (i = 0; i < 500; i++) {
 			//check for geolocation on instagram
 			if (typeof(latitude[i]) != 'undefined' || latitude[i] != null) {		 
@@ -40,7 +41,7 @@ function addMarkers() {
 				var marker = new google.maps.Marker({
 								position: new google.maps.LatLng(latitude[i], longitude[i]),
 								map: map,
-								identify: i,
+								identify: i
 					});
 				markersArray.push(marker);
 			//add info windows with data
@@ -56,46 +57,49 @@ function addMarkers() {
 	}	
 function loadInstagrams() {
 //get info from instagram AJAX
-	$.ajax({
-	    type: "GET",
-		dataType: "jsonp",
-		cache: false,
-		url: instagram.apiHost + "/v1/tags/" + tag + "/media/recent",
-		data: {'client_id': instagram.clientID, 'max_tag_id': min },
-		success: function (photos) {
-			min = photos.pagination.next_max_tag_id;
-			url = photos.pagination.next_url;
-			//cycle through instagram photos
-			for (i = 0; i < photos.data.length; i++) {
-				// check for location data
-				if (photos.data[i].location !== null) {
-			        //save data from instagram as variables
-					var pic = photos.data[i].images.thumbnail.url;
-						largepic = photos.data[i].images.low_resolution.url;
-						lat = photos.data[i].location.latitude;
-						lon = photos.data[i].location.longitude;
-						link = photos.data[i].link;
-						try {
-							text = photos.data[i].caption.text;
-						}
-						catch(err) {
-							text = " ";
-						}
-						//save variables to arrays
-						latitude[a] = lat;
-						longitude[a] = lon;
-						photo_content[a] = "<a target='_blank' href='" + link + "'><img class='insta' src='" + largepic + "'></a><p class='caption'>'" + text + "'</p>";
-						//add photo to div to be used for an info window
-						contentstring[a] = '<div class="content">' + photo_content[a] + '</div>';
-						a++;
+console.log("load Instagrams");
+		$.ajax({
+			type: "GET",
+			dataType: "jsonp",
+			cache: false,
+			url: instagram.apiHost + "/v1/tags/" + tag + "/media/recent",
+			data: {'client_id': instagram.clientID, 'max_tag_id': min },
+			success: function (photos) {
+				min = photos.pagination.next_max_tag_id;
+				url = photos.pagination.next_url;
+				//cycle through instagram photos
+				for (i = 0; i < photos.data.length; i++) {
+					// check for location data
+					if (photos.data[i].location !== null) {
+						//save data from instagram as variables
+						var pic = photos.data[i].images.thumbnail.url;
+							largepic = photos.data[i].images.low_resolution.url;
+							lat = photos.data[i].location.latitude;
+							lon = photos.data[i].location.longitude;
+							link = photos.data[i].link;
+							try {
+								text = photos.data[i].caption.text;
+							}
+							catch(err) {
+								text = " ";
+							}
+							//save variables to arrays
+							latitude[a] = lat;
+							longitude[a] = lon;
+							photo_content[a] = "<a target='_blank' href='" + link + "'><img class='insta' src='" + largepic + "'></a><p class='caption'>'" + text + "'</p>";
+							//add photo to div to be used for an info window
+							contentstring[a] = '<div class="content">' + photo_content[a] + '</div>';
+							a++;
+					}
 				}
+			addMarkers(); 
 			}
-		addMarkers(); 
-		}
-	});
-}
+		});
+	}
+
 //function to clear markers and array data
 function clearOverlays() {
+console.log("clear Overlays");
 	for (i = 0; i < markersArray.length; i++ ) {
     markersArray[i].setMap(null);
 	}
@@ -108,17 +112,19 @@ function clearOverlays() {
 }
 //function to set tag based on input
  function settag() {
+ console.log("set tag");
 		tag = document.getElementById('value').value;
-	}
+}
 //final function to run when button is clicked	
 function go() {
 		clearOverlays();
 		settag();
 		loadInstagrams();
-		}
+}
 
 //load page
 $(document).ready(function() {
+	window.location.replace("https://instagram.com/oauth/authorize/?client_id= 	03dfcae06e944df4a0e54fad2c3abcab&redirect_uri=http://johnpmitsch.github.io/mappedOut/mappedOut.html&response_type=token");
 	google.maps.event.addDomListener(window, 'load', initialize);
 	//use enter to submit
 	$('#value').keypress(function(e) {
