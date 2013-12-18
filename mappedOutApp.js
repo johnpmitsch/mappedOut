@@ -99,7 +99,7 @@ console.log("load Instagrams");
 
 //function to clear markers and array data
 function clearOverlays() {
-console.log("clear Overlays");
+	console.log("clear Overlays");
 	for (i = 0; i < markersArray.length; i++ ) {
     markersArray[i].setMap(null);
 	}
@@ -108,11 +108,10 @@ console.log("clear Overlays");
 	longitude.length = 0;
 	photo_content.length = 0;
 	contentstring.length = 0;
-	google.maps.event.addDomListener(window, 'load', initialize);
 }
 //function to set tag based on input
  function settag() {
- console.log("set tag");
+	console.log("set tag");
 		tag = document.getElementById('value').value;
 }
 //final function to run when button is clicked	
@@ -124,12 +123,13 @@ function go() {
 
 //load page
 $(document).ready(function() {
-	window.location.replace("https://instagram.com/oauth/authorize/?client_id= 	03dfcae06e944df4a0e54fad2c3abcab&redirect_uri=http://johnpmitsch.github.io/mappedOut/mappedOut.html&response_type=token");
+	//URL redirect to authentication. The user signs in and takes on the 5000 request limit from instagram API 
+	//window.location.replace("https://instagram.com/oauth/authorize/?client_id=03dfcae06e944df4a0e54fad2c3abcab&redirect_uri=http://johnpmitsch.github.io/mappedOut/mappedOut.html&response_type=token");
 	google.maps.event.addDomListener(window, 'load', initialize);
 	//use enter to submit
 	$('#value').keypress(function(e) {
         if(e.which == 13) {
-			event.preventDefault();
+			console.log("enter");
 			go();
 			}
 		});
