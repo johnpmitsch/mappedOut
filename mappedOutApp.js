@@ -19,6 +19,9 @@ instagram = {
     clientID: '03dfcae06e944df4a0e54fad2c3abcab',
     apiHost: 'https://api.instagram.com'
 };	
+//create empty LatLngBounds object
+var bounds = new google.maps.LatLngBounds();
+
 //initialize google maps
 function initialize() {
 console.log("initialize");
@@ -30,31 +33,44 @@ console.log("initialize");
 		zoom: 3		
 	}; 
 	//show map
-	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 function addMarkers() {
 console.log("add marker");
 	for (i = 0; i < 500; i++) {
-			//check for geolocation on instagram
-			if (typeof(latitude[i]) != 'undefined' || latitude[i] != null) {		 
+		//check for geolocation on instagram
+		if (typeof(latitude[i]) != 'undefined' || latitude[i] != null) {		 
 			//add markers to map
-				var marker = new google.maps.Marker({
-								position: new google.maps.LatLng(latitude[i], longitude[i]),
-								map: map,
-								identify: i
-					});
-				markersArray.push(marker);
+			var marker = new google.maps.Marker({
+							position: new google.maps.LatLng(latitude[i], longitude[i]),
+							map: map,
+							identify: i
+				});
+			markersArray.push(marker);	
+			bounds.extend(marker.position);
 			//add info windows with data
-				var infowindow = new google.maps.InfoWindow();
-				google.maps.event.addListener(marker, 'click', (function (marker, i) {
-					return function() {
-						infowindow.setContent(contentstring[i]);
-						infowindow.open(map, marker);
-					}
-				})(marker, i));
-			} 
+			var infowindow = new google.maps.InfoWindow();
+			google.maps.event.addListener(marker, 'click', (function (marker, i) {
+				return function() {
+					infowindow.setContent(contentstring[i]);
+					infowindow.open(map, marker);
+					//add event listener to close info window when clicking outside info window
+					google.maps.event.addListener(map, "click", function() {
+						console.log("infowindowclose");
+						if (infowindow) {
+						infowindow.close();
+						}
+					}); 
+				}
+			})(marker, i));
+		} 
+	}
+	fitMarkers();
+}
+function fitMarkers() {
+		map.fitBounds(bounds);
+		console.log("fitMarkers");
 		}
-	}	
 function loadInstagrams() {
 //get info from instagram AJAX
 console.log("load Instagrams");
@@ -86,7 +102,7 @@ console.log("load Instagrams");
 							//save variables to arrays
 							latitude[a] = lat;
 							longitude[a] = lon;
-							photo_content[a] = "<a target='_blank' href='" + link + "'><img class='insta' src='" + largepic + "'></a><p class='caption'>'" + text + "'</p>";
+							photo_content[a] = "<a target='_blank' href='" + link + "'><img class='insta' src='" + largepic + "'></a><p class='caption'>" + text + "</p>";
 							//add photo to div to be used for an info window
 							contentstring[a] = '<div class="content">' + photo_content[a] + '</div>';
 							a++;
@@ -101,7 +117,7 @@ console.log("load Instagrams");
 function clearOverlays() {
 	console.log("clear Overlays");
 	for (i = 0; i < markersArray.length; i++ ) {
-    markersArray[i].setMap(null);
+		markersArray[i].setMap(null);
 	}
 	markersArray.length = 0;
 	latitude.length = 0;
